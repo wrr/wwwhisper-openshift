@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [[ ${#} == 0 ]];  then
+    cat 1>&2 <<EOF
+Copies files to the stash data directory in the OpenShift instance.
+ Usage: $0 files
+
+EOF
+    exit 1
+fi
+
+SCRIPT_DIR="$(cd "$( dirname "$0" )" && pwd)/"
+SSH_ADDR=`${SCRIPT_DIR}ssh_address`
+
+for file in "${@}"
+do
+    scp -r ${file} ${SSH_ADDR}:~/app-root/data/stash/
+done

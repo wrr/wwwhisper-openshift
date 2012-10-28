@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Runs build scripts on the OpenShift instance. At the moment 'git
+# push' is the only way to start the build, so artifical change needs
+# to be added to the repo (see
+# https://bugzilla.redhat.com/show_bug.cgi?id=867965).
+
+SCRIPT_DIR="$(cd "$( dirname "$0" )" && pwd)/"
+
+FORCE_FILE=${SCRIPT_DIR}../.openshift/.force_build
+
+echo ${FORCE_FILE}
+date > ${FORCE_FILE}
+git add ${FORCE_FILE}
+git commit -m "Rebuild" -a
+git push

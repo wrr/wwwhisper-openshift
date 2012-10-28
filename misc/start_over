@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Deletes packages installed on the OpenShift instance, such that
+# the next git push will reinstall them from scratch. Does not affect
+# applications' data (such as wiki content, wwwhisper database)
+
+# Exit on first error.
+set -e
+
+SCRIPT_DIR="$(cd "$( dirname "$0" )" && pwd)/"
+
+SSH_ADDR=`${SCRIPT_DIR}ssh_address`
+
+read -p \
+"Do you want to delete packages installed on your OpenShift instance? [y/N]
+" -n 1 -r
+echo
+if [[ ${REPLY} =~ ^[Yy]$ ]]
+then
+    ssh ${SSH_ADDR} 'rm -rf ~/app-root/runtime/virtualenv
+ ~/app-root/runtime/nginx
+ ~/app-root/runtime/wwwhisper'
+fi

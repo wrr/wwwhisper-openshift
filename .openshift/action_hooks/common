@@ -1,0 +1,24 @@
+#!/bin/bash
+# Helper functions used by several scripts.
+
+VIRTUALENV_DIR=${OPENSHIFT_RUNTIME_DIR}virtualenv/
+
+function activate_virtualenv() {
+    echo "Activating virtualenv"
+    source ${VIRTUALENV_DIR}bin/activate
+    # Use virtualenv directory also for ruby gems.
+    export GEM_PATH=""
+    export GEM_HOME=${VIRTUALENV_DIR}
+}
+
+function is_empty() {
+    [[ "$1" == ""  ]]
+}
+
+function is_true() {
+    [[ "$1" == "1"  ]] || [[ "$1" == "true" ]]
+}
+
+function executable_exist() {
+    command -v $1 2>&1 >/dev/null
+}

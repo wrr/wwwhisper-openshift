@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Your private space</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="/auth/assets/css/bootstrap.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+
+     <h1>Welcome to your private site</h1>
+     <h3>What's here?</h3>
+     <p>
+       By default following locations are configured:
+     </p>
+
+     <ul>
+       <li>
+         <a href="./wiki/">Wiki</a> powered by Gollum (git based).
+       </li>
+       <li>
+         <a href="./blog/">Blog</a> powered by Tinkerer.
+       </li>
+       <li>
+         <a href="/">Root</a> html document you are now
+         reading. Change it by placing index.html file in
+         the <i>./root</i> directory of the site's git repository;
+         <i>git add</i>, <i>commit</i> and <i>push</i> the file.
+       </li>
+       <li>
+         <a href="./stash/">Stash</a> a directory for bulk
+         files. You can use <i>misc/copy_to_stash</i> script to
+         convieniently upload files there.
+       </li>
+       <li>
+         <a href="./admin/">Admin</a>: use it to grant and revoke
+         access to other users. If you need, you can define fine
+         grained access control rules (for example grant access to a
+         single blog post). You can also open access to select
+         locations, so no authorization will be required.
+       </li>
+     </ul>
+
+     <h3>Modifying the git repository of the site</h3>
+
+     <p>
+       Each time you modify the git repository of your site, for the
+       changes to take effect, you need to <b>commit</b> and <b>push</b>
+       them.
+     </p>
+
+     <h3>Accessing OpenShift instance via ssh</h3>
+
+     <p>
+       <i>misc/ssh_address</i> outputs an address of your
+       OpenShift instance.
+     </p>
+
+     <p>
+       You may want to access OpenShift instance via ssh, to experiment
+       with new applications, diagnose problems or backup application
+       data.
+     </p>
+
+
+     <h3>Extending the site</h3>
+     <p>
+       You can install other applications. Go to the git repository for
+       the site and extend
+       <i>.openshift/action_hooks/build</i> to download and install an
+       application and its
+       dependencies, <i>.openshift/action_hooks/start</i> to start it
+       <i>.openshift/action_hooks/stop</i> to stop it. Next, edit
+       <i>etc/nginx.conf.template</i> to serve the application.
+     </p>
+
+    </div> <!-- container -->
+  </body>
+</html>

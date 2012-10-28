@@ -1,0 +1,52 @@
+#!/bin/bash
+# The logic to start up your application should be put in this
+# script. The application will work only if it binds to
+# $OPENSHIFT_INTERNAL_IP:8080
+
+set -e
+
+source ${OPENSHIFT_REPO_DIR}etc/site.conf
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/common
+
+NGINX_DIR=${OPENSHIFT_RUNTIME_DIR}nginx/
+SITE_CONFIG_DIR=${OPENSHIFT_DATA_DIR}wwwhisper/https.${OPENSHIFT_APP_DNS}.443/
+
+umask 077
+
+echo "Preprocessing nginx config."
+cat ${OPENSHIFT_REPO_DIR}etc/nginx.conf.template | \
+    ${OPENSHIFT_REPO_DIR}misc/expand_vars \
+    > ${NGINX_DIR}conf/nginx.conf
+
+echo "Starting nginx."
+${NGINX_DIR}sbin/nginx
+
+activate_virtualenv
+
+echo "Starting uwsgi for wwwhisper."
+
+# uwsgi does not seem to respect umask for a log file.
+touch ${OPENSHIFT_LOG_DIR}wwwhisper.log
+chmod 600 ${OPENSHIFT_LOG_DIR}wwwhisper.log
+
+uwsgi --socket=${OPENSHIFT_RUN_DIR}wwwhisper.sock\
+ --pidfile=${OPENSHIFT_RUN_DIR}wwwhisper.pid\
+ --daemonize2=${OPENSHIFT_LOG_DIR}wwwhisper.log\
+ --chdir=${OPENSHIFT_RUNTIME_DIR}wwwhisper/django_wwwhisper\
+ --module="wwwhisper_service.wsgi:application"\
+ --master\
+ --vacuum\
+ --processes=1\
+ --chmod-socket=600\
+ --plugins=python\
+ --python-path="${SITE_CONFIG_DIR}django/"\
+ --virtualenv="${VIRTUALENV_DIR}"
+
+if is_true ${GOLLUM}; then
+    echo "Starting rack for gollum wiki."
+    rackup --host ${OPENSHIFT_INTERNAL_IP}\
+     --port 15000\
+     --pid ${OPENSHIFT_RUN_DIR}gollum.pid\
+     --daemonize\
+     ${OPENSHIFT_REPO_DIR}etc/gollum.ru
+fi

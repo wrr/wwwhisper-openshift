@@ -1,0 +1,200 @@
+#!/bin/bash
+# This is a simple build script and will be executed on your CI system if
+# available.  Otherwise it will execute while your application is stopped
+# before the deploy step.  This script gets executed directly, so it
+# could be python, php, ruby, etc.
+
+# Exit on first error.
+set -e
+
+# Trace each line.
+# set -x
+
+source ${OPENSHIFT_REPO_DIR}etc/site.conf
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/common
+
+NGINX_VERSION='1.2.4'
+ROOT_DIR=${OPENSHIFT_RUNTIME_DIR}
+BUILD_DIR=${OPENSHIFT_TMP_DIR}/build
+
+# OpenShift sets GIT_DIR to . which terminates pull with an error:
+# Not a git repository: '.'
+unset GIT_DIR
+
+umask 077
+
+function install_nginx() {
+    mkdir -p ${BUILD_DIR}
+    pushd ${BUILD_DIR}
+    local pkg=nginx-${NGINX_VERSION}.tar.gz
+
+    echo "Downloading ${pkg}."
+    wget http://nginx.org/download/${pkg}
+    echo "Unpacking ${pkg}."
+    tar xfz ${pkg}
+    pushd nginx-${NGINX_VERSION}
+
+    echo "Downloading pcre."
+    wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.31.tar.bz2
+    echo "Unpacking pcre."
+    tar xfj pcre-8.31.tar.bz2
+
+    echo "Downloading auth-request module."
+    git clone https://github.com/PiotrSikora/ngx_http_auth_request_module.git
+
+    echo "Configuring nginx."
+    ./configure --add-module=./ngx_http_auth_request_module/ \
+        --with-http_ssl_module --with-http_sub_module \
+        --with-pcre=./pcre-8.31 \
+        --prefix=${ROOT_DIR}nginx
+
+    echo "Compiling nginx."
+    make install
+    popd
+    popd
+    echo "Cleaning build directory."
+    rm -rf ${BUILD_DIR}
+}
+
+
+function check_nginx() {
+    local nginx_bin=${ROOT_DIR}nginx/sbin/nginx
+
+    if [[ ! -a  ${nginx_bin} ]]; then
+        echo "nginx not installed."
+        install_nginx
+    else
+        local nginx_version=`${nginx_bin} -v 2>&1|cut -d/ -f2`
+
+        if [[ ${NGINX_VERSION} != ${nginx_version} ]]; then
+            echo "nginx old, version: ${nginx_version}."
+            install_nginx
+        else
+            echo "nginx up to date, version: ${nginx_version}."
+        fi
+    fi
+}
+
+
+function check_virtualenv() {
+    if [[ ! -a  ${VIRTUALENV_DIR} ]]; then
+        echo "Initializing virtualenv."
+        virtualenv ${VIRTUALENV_DIR}
+    fi
+}
+
+function check_wwwhisper() {
+    pushd ${ROOT_DIR}
+    if [[ ! -a  ./wwwhisper ]]; then
+        echo "Downloading wwwhisper."
+        git clone https://github.com/wrr/wwwhisper.git
+        pushd wwwhisper
+        echo "Downloading wwwhisper dependencies."
+    else
+        echo "Updating wwwhisper."
+        pushd wwwhisper
+        git pull
+
+        echo "Updating wwwhisper dependencies."
+    fi
+    pip install --use-mirrors -r ./requirements.txt
+
+    popd
+    popd
+}
+
+function check_wwwhisper_config() {
+    if is_empty ${INITIAL_ADMIN_EMAIL}; then
+        cat 1>&2 <<EOF
+          ============================================================
+          FATAL: You need to set INITIAL_ADMIN_EMAIL in etc/site.conf.
+          ============================================================
+EOF
+        exit 1
+    fi
+
+    if [[ ! -a  ${OPENSHIFT_DATA_DIR}wwwhisper ]]; then
+        echo "Generating wwwhisper configuration."
+        local locations="-l / -l /admin -l /stash"
+        if is_true ${TINKERER}; then
+            locations="${locations} -l /blog"
+        fi
+        if is_true ${GOLLUM}; then
+            locations="${locations} -l /wiki"
+        fi
+        ${ROOT_DIR}wwwhisper/add_site_config.py\
+            --site-url https://$OPENSHIFT_APP_DNS\
+            --admin-email ${INITIAL_ADMIN_EMAIL}\
+            ${locations}\
+            --output-dir  ${OPENSHIFT_DATA_DIR}wwwhisper\
+            --no-supervisor
+    fi
+}
+
+function check_gollum() {
+    if ! gollum --help >/dev/null ; then
+        echo "Installing gollum wiki."
+        gem install -V --no-rdoc --no-ri gollum
+    else
+        echo "Gollum already installed."
+    fi
+}
+
+function check_gollum_repo() {
+    pushd ${OPENSHIFT_DATA_DIR}
+    if [[ ! -d  ./wiki ]]; then
+        echo "Creating git repository for wiki."
+        mkdir wiki
+        pushd wiki
+        git init
+        git config user.name "Gollum"
+        popd
+    else
+        echo "git repository for wiki already exists."
+    fi
+    popd
+}
+
+function check_tinkerer() {
+    if ! tinker -h >/dev/null ; then
+        echo "Installing tinkerer blog."
+        easy_install -U Tinkerer
+        pushd ${VIRTUALENV_DIR}lib/python2.6/site-packages
+        for html_file in `find Tinkerer* -name '*html' -print`
+        do
+            # A temporary hack that forces Tinkerer to use local
+            # version of jquery to avoid mixing http content into
+            # https site. To be removed when Tinkerer exposes a
+            # configuration option for doing this.
+            # See https://bitbucket.org/vladris/tinkerer/issue/58/
+            sed -i 's/<script src="http.*jquery.*<\/script>/<!-- Use only local jquery -->"/g' ${html_file}
+        done
+        popd
+    else
+        echo "Tinkerer already installed."
+    fi
+}
+
+function check_stash() {
+    mkdir -p ${OPENSHIFT_DATA_DIR}stash
+    touch ${OPENSHIFT_DATA_DIR}stash/bulk_files_go_here
+}
+
+check_nginx
+check_virtualenv
+activate_virtualenv
+
+if is_true ${TINKERER}; then
+    check_tinkerer
+fi
+
+if is_true ${GOLLUM}; then
+    check_gollum
+    check_gollum_repo
+fi
+
+check_stash
+check_wwwhisper
+check_wwwhisper_config
+
+exit 0

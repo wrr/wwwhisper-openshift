@@ -1,0 +1,5 @@
+#!/bin/sh
+# Prints ssh address of the OpenShift instance.
+
+# Is there less hacky way?
+git remote show -n origin|grep Fetch|cut -d/ -f 3
