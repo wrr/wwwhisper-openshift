@@ -42,15 +42,18 @@ Installation
 
         git push origin master;
 
-   The first push will take up to 15 minutes; the script needs to
-   download, compile and install many dependencies (nginx, wwwhisper,
-   Tinkerer and Gollum that requires tons of gems).
+   The first push will take up to 15 minutes; a build script executed
+   on OpenShift needs to download, compile and install many
+   dependencies (nginx, wwwhisper, Tinkerer and Gollum that requires
+   tons of gems).
 
 
 When the push finishes point your browser to
 *https://your_app_name-your_namespace.rhcloud.com*. You should see
 a login screen like this:
+
 ![Login prompt](https://raw.github.com/wrr/www/master/mixedbit.org/wwwhisper_screens/login_required.png)
+
 Sign-in with your email. The welcome page contains links to installed
 applications and short instructions how to use the site and grant
 access to other people.
