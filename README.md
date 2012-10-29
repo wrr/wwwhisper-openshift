@@ -8,10 +8,10 @@ platform. To give you some useful applications for a start, the
 scripts setup a [Gollum](https://github.com/github/gollum) wiki, a
 [Tinkerer](http://tinkerer.me/) blog and a directory for bulk
 files. Initially only you are allowed access to these locations, but
-you can use wwwhisper admin interface to grant access to other
-people. [Mozilla Persona](https://login.persona.org/about) is used to
-authenticate visitors and prove that they own allowed emails; no
-site-specific passwords are created and stored.
+you can use wwwhisper to grant access to other people. [Mozilla
+Persona](https://login.persona.org/about) is used to authenticate
+visitors and prove that they own allowed emails; no site-specific
+passwords are created and stored.
 
 Installation
 ------------
