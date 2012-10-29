@@ -5,7 +5,8 @@ These scripts allow to easily setup your own
 [wwwhisper](https://github.com/wrr/wwwhisper) authorized web
 server(nginx) on the [OpenShift](https://openshift.redhat.com/app/)
 platform. To give you some useful applications for a start, the
-scripts setup a Gollum wiki, a Tinkerer blog and a directory for bulk
+scripts setup a [Gollum](https://github.com/github/gollum) wiki, a
+[Tinkerer](http://tinkerer.me/) blog and a directory for bulk
 files. Initially only you are allowed to access these locations, but
 wwwhisper admin interface can be used to specify emails of other users
 that should be allowed access. [Mozilla
@@ -21,29 +22,29 @@ Installation
 2. [Install](https://openshift.redhat.com/community/get-started)
    OpenShift client tools. On many platforms it is just a matter of:
 
-       sudo gem install rhc;
-       rhc setup;
+           sudo gem install rhc;
+           rhc setup;
 
-3. Choose some name for your application and create the application:
+3. Choose a name for your application and create the application:
 
-       YOUR_APP_NAME="io";
-       rhc app create -t diy-0.1 -a $YOUR_APP_NAME;
+           YOUR_APP_NAME="io";
+           rhc app create -t diy-0.1 -a $YOUR_APP_NAME;
 
 4. Pull configuration scripts:
 
-       cd $YOUR_APP_NAME;
-       git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
-       git pull -s recursive -X theirs upstream master
+           cd $YOUR_APP_NAME;
+           git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
+           git pull -s recursive -X theirs upstream master
 
 5. Edit ''etc/site.conf`` and enter your email address as INITIAL_ADMIN_EMAIL.
 
 6. Push configuration files to OpenShift:
 
-       git push
+           git push
 
    The first push will take up to 15 minutes; the script needs to
    download, compile and install many dependencies (nginx, wwwhisper,
-   tinkerer and especially Gollum that requires tons of gems). When
+   Tinkerer and Gollum that requires tons of gems). When
    the push finishes point your browser to:
    https://your_app_name-your_namespace.rhcloud.com
 
