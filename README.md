@@ -36,7 +36,7 @@ Installation
         git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
         git pull -s recursive -X theirs upstream master
 
-5. Edit ''etc/site.conf`` and enter your email address as INITIAL_ADMIN_EMAIL.
+5. Edit `./etc/site.conf` and enter your email address as `INITIAL_ADMIN_EMAIL`.
 
 6. Push configuration files to OpenShift:
 
@@ -46,7 +46,7 @@ Installation
    download, compile and install many dependencies (nginx, wwwhisper,
    Tinkerer and Gollum that requires tons of gems). When
    the push finishes point your browser to:
-   https://your_app_name-your_namespace.rhcloud.com
+   *https://your_app_name-your_namespace.rhcloud.com*
 
 You should see a login screen like this:
 
