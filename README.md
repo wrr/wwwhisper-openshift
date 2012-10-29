@@ -22,25 +22,25 @@ Installation
 2. [Install](https://openshift.redhat.com/community/get-started)
    OpenShift client tools. On many platforms it is just a matter of:
 
-           sudo gem install rhc;
-           rhc setup;
+         sudo gem install rhc;
+         rhc setup;
 
 3. Choose a name for your application and create the application:
 
-           YOUR_APP_NAME="io";
-           rhc app create -t diy-0.1 -a $YOUR_APP_NAME;
+         YOUR_APP_NAME="io";
+         rhc app create -t diy-0.1 -a $YOUR_APP_NAME;
 
 4. Pull configuration scripts:
 
-           cd $YOUR_APP_NAME;
-           git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
-           git pull -s recursive -X theirs upstream master
+         cd $YOUR_APP_NAME;
+         git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
+         git pull -s recursive -X theirs upstream master
 
 5. Edit ''etc/site.conf`` and enter your email address as INITIAL_ADMIN_EMAIL.
 
 6. Push configuration files to OpenShift:
 
-           git push
+         git push
 
    The first push will take up to 15 minutes; the script needs to
    download, compile and install many dependencies (nginx, wwwhisper,
