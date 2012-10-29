@@ -36,7 +36,10 @@ Installation
         git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git;
         git pull -s recursive -X theirs upstream master;
 
-5. Edit `./etc/site.conf` and enter your email address as `INITIAL_ADMIN_EMAIL`.
+5. Edit `./etc/site.conf` and enter your email address as
+   `INITIAL_ADMIN_EMAIL`. commit the change:
+
+        git commit -m "Set initial admin email" -a;
 
 6. Push configuration files to OpenShift:
 
