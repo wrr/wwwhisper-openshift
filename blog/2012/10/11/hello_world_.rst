@@ -1,5 +1,5 @@
-Welcome to your private blog!
-=============================
+Welcome!
+========
 
 .. highlight:: bash
 
@@ -14,7 +14,7 @@ Customization
 ~~~~~~~~~~~~~
 
 To customize the blog, go to the ``blog`` directory in your OpenShift
-project repository and edit ``conf.py``. You'll likely want to modify
+site repository and edit ``conf.py``. You'll likely want to modify
 *project*, *tagline* and *author* settings. Next execute::
 
     git commit -m "Modified blog settings" -a
@@ -22,22 +22,22 @@ project repository and edit ``conf.py``. You'll likely want to modify
 
 Posting
 ~~~~~~~
-To create a new post, execute::
+Create a new post::
 
     tinker --post 'Title of your post'
 
-Edit the post file. To preview the post execute::
+Edit the post file. To preview the post, execute::
 
     tinker --build
 
 and point your browser to the generated local version of the
-blog. When you are satisfied with your post::
+blog. When you are satisfied with the post::
 
     git add year/month/day/post;
     git commit -m "New blog post" -a
     git push;
 
-Do not add generated files to the git repository, deploy scripts will
+Do not add generated files to the git repository, deploy scripts
 regenerate them on the server.
 
 Finally, you probably want to remove the introductory post your are

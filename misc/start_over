@@ -12,7 +12,8 @@ SCRIPT_DIR="$(cd "$( dirname "$0" )" && pwd)/"
 SSH_ADDR=`${SCRIPT_DIR}ssh_address`
 
 read -p \
-"Do you want to delete packages installed on your OpenShift instance? [y/N]
+"Do you want to delete packages installed on your OpenShift instance?
+ [y/N]
 " -n 1 -r
 echo
 if [[ ${REPLY} =~ ^[Yy]$ ]]
