@@ -33,28 +33,25 @@ Installation
 4. Pull configuration scripts:
 
         cd $YOUR_APP_NAME;
-        git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git
-        git pull -s recursive -X theirs upstream master
+        git remote add upstream -m master git://github.com/wrr/wwwhisper-openshift.git;
+        git pull -s recursive -X theirs upstream master;
 
 5. Edit `./etc/site.conf` and enter your email address as `INITIAL_ADMIN_EMAIL`.
 
 6. Push configuration files to OpenShift:
 
-        git push
+        git push origin master;
 
    The first push will take up to 15 minutes; the script needs to
    download, compile and install many dependencies (nginx, wwwhisper,
-   Tinkerer and Gollum that requires tons of gems). When
-   the push finishes point your browser to:
-   *https://your_app_name-your_namespace.rhcloud.com*
-
-You should see a login screen like this:
-
-![Login prompt](https://raw.github.com/wrr/www/master/mixedbit.org/wwwhisper_screens/login_required.png)
-
-Sign-in with your email. The welcome page contains links to installed
-applications and short instructions how to use the site and grant
-access to other people.
+   Tinkerer and Gollum that requires tons of gems). When the push
+   finishes point your browser to
+   *https://your_app_name-your_namespace.rhcloud.com* You should see a
+   login screen like this: ![Login
+   prompt](https://raw.github.com/wrr/www/master/mixedbit.org/wwwhisper_screens/login_required.png)
+   Sign-in with your email. The welcome page contains links to
+   installed applications and short instructions how to use the site
+   and grant access to other people.
 
 
 Troubleshooting

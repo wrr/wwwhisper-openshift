@@ -13,4 +13,4 @@ echo ${FORCE_FILE}
 date > ${FORCE_FILE}
 git add ${FORCE_FILE}
 git commit -m "Rebuild" -a
-git push
+git push origin master
