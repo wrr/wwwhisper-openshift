@@ -132,7 +132,7 @@ EOF
 }
 
 function check_gollum() {
-    if ! gollum --help >/dev/null ; then
+    if ! gollum --help 2>&1 >/dev/null ; then
         echo "Installing gollum wiki."
         gem install -V --no-rdoc --no-ri gollum
     else
@@ -156,7 +156,7 @@ function check_gollum_repo() {
 }
 
 function check_tinkerer() {
-    if ! tinker -h >/dev/null ; then
+    if ! tinker -h 2>&1 >/dev/null ; then
         echo "Installing tinkerer blog."
         easy_install -U Tinkerer
         pushd ${VIRTUALENV_DIR}lib/python2.6/site-packages

@@ -46,6 +46,7 @@ Installation
    download, compile and install many dependencies (nginx, wwwhisper,
    Tinkerer and Gollum that requires tons of gems).
 
+
 When the push finishes point your browser to
 *https://your_app_name-your_namespace.rhcloud.com*. You should see
 a login screen like this:
@@ -53,7 +54,6 @@ a login screen like this:
 Sign-in with your email. The welcome page contains links to installed
 applications and short instructions how to use the site and grant
 access to other people.
-
 
 Troubleshooting
 ---------------
