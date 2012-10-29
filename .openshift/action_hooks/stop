@@ -4,8 +4,8 @@
 echo "Stopping nginx."
 kill -QUIT `cat ${OPENSHIFT_RUN_DIR}nginx.pid`
 
-echo "Stopping rack for gollum."
-kill -INT `cat ${OPENSHIFT_RUN_DIR}gollum.pid`
-
 echo "Stopping uwsgi for wwwhisper."
 kill -INT `cat ${OPENSHIFT_RUN_DIR}wwwhisper.pid`
+
+echo "Stopping rack for gollum."
+kill -INT `cat ${OPENSHIFT_RUN_DIR}gollum.pid`

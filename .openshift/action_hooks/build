@@ -184,6 +184,11 @@ check_nginx
 check_virtualenv
 activate_virtualenv
 
+check_wwwhisper
+check_wwwhisper_config
+
+check_stash
+
 if is_true ${TINKERER}; then
     check_tinkerer
 fi
@@ -192,9 +197,5 @@ if is_true ${GOLLUM}; then
     check_gollum
     check_gollum_repo
 fi
-
-check_stash
-check_wwwhisper
-check_wwwhisper_config
 
 exit 0
