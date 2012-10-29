@@ -1,18 +1,17 @@
 wwwhisper-openshift
 ===================
 
-These scripts allow to easily setup your own
+These configuration files allow to easily setup your own
 [wwwhisper](https://github.com/wrr/wwwhisper) authorized web
 server(nginx) on the [OpenShift](https://openshift.redhat.com/app/)
 platform. To give you some useful applications for a start, the
 scripts setup a [Gollum](https://github.com/github/gollum) wiki, a
 [Tinkerer](http://tinkerer.me/) blog and a directory for bulk
-files. Initially only you are allowed to access these locations, but
-wwwhisper admin interface can be used to specify emails of other users
-that should be allowed access. [Mozilla
-Persona](https://login.persona.org/about) is used to authenticate
-visitors and prove that they own allowed emails; no site-specific
-passwords are created and stored.
+files. Initially only you are allowed access to these locations, but
+you can use wwwhisper admin interface to grant access to other
+people. [Mozilla Persona](https://login.persona.org/about) is used to
+authenticate visitors and prove that they own allowed emails; no
+site-specific passwords are created and stored.
 
 Installation
 ------------
@@ -37,7 +36,7 @@ Installation
         git pull -s recursive -X theirs upstream master;
 
 5. Edit `./etc/site.conf` and enter your email address as
-   `INITIAL_ADMIN_EMAIL`. commit the change:
+   `INITIAL_ADMIN_EMAIL`. Commit the change:
 
         git commit -m "Set initial admin email" -a;
 
