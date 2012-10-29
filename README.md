@@ -22,8 +22,8 @@ Installation
 2. [Install](https://openshift.redhat.com/community/get-started)
    OpenShift client tools. On many platforms it is just a matter of:
 
-         sudo gem install rhc;
-         rhc setup;
+        sudo gem install rhc;
+        rhc setup;
 
 3. Choose a name for your application and create the application:
 
