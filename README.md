@@ -13,6 +13,11 @@ Persona](https://login.persona.org/about) is used to authenticate
 visitors and prove that they own allowed emails; no site-specific
 passwords are created and stored.
 
+Preview
+-------
+You can visit [a demo site](https://io-mixedbit.rhcloud.com/) on
+OpenShift. Login is `guest@mixedbit.org`, password `guestguest`.
+
 Installation
 ------------
 
