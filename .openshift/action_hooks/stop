@@ -1,6 +1,8 @@
 #!/bin/bash
 # The logic to stop your application should be put in this script.
 
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/common
+
 echo "Stopping nginx."
 kill -QUIT `cat ${OPENSHIFT_RUN_DIR}nginx.pid`
 
@@ -9,3 +11,7 @@ kill -INT `cat ${OPENSHIFT_RUN_DIR}wwwhisper.pid`
 
 echo "Stopping rack for gollum."
 kill -INT `cat ${OPENSHIFT_RUN_DIR}gollum.pid`
+
+# Always succeed, otherwise OpenShift declines to run build and start
+# hooks.
+exit 0
