@@ -13,6 +13,16 @@ Persona](https://login.persona.org/about) is used to authenticate
 visitors and prove that they own allowed emails; no site-specific
 passwords are created and stored.
 
+Preview
+-------
+
+Visit [a demo site](https://io-mixedbit.rhcloud.com/). The site is configured
+to allow everyone access. If you want to see the demo but don't want
+to create a real Persona account, sign-in with an address like:
+PutAnythingHere@mockmyid.com (Such addresses use [mock Persona
+id](https://mockmyid.com/)).
+
+
 Installation
 ------------
 
