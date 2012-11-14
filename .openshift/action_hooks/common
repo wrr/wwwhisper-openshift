@@ -1,12 +1,9 @@
 #!/bin/bash
 # Helper functions used by several scripts.
 
-# Temporary workaround for an OpenShift bug (the *_DIR variables do
-# not end with '/').
-# See https://openshift.redhat.com/community/forums/openshift/has-openshift-environment-variables-convention-changed
-# TODO: remove when the bug is resolved.
-export OPENSHIFT_RUN_DIR=${OPENSHIFT_RUN_DIR}/
-export OPENSHIFT_RUNTIME_DIR=${OPENSHIFT_RUNTIME_DIR}/
+export OPENSHIFT_RUN_DIR=${OPENSHIFT_HOME_DIR}/diy-0.1/run/
+export OPENSHIFT_RUNTIME_DIR=${OPENSHIFT_HOME_DIR}/diy-0.1/runtime/
+export OPENSHIFT_LOG_DIR=${OPENSHIFT_DIY_LOG_DIR}
 
 VIRTUALENV_DIR=${OPENSHIFT_RUNTIME_DIR}virtualenv/
 
