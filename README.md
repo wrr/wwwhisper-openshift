@@ -24,7 +24,7 @@ addresses use [mock Persona id](https://mockmyid.com/) and should not
 be used for anything important).
 
 You can also check [a demo version of the admin
-UI](http://mixedbit.org/admin_demo/).
+UI](http://mixedbit.org/admin/).
 
 Installation
 ------------
