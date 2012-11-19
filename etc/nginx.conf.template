@@ -73,6 +73,8 @@ http {
 
             location /wiki {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                # $user is set according to the auth-request result.
+                proxy_set_header User $user;
                 #proxy_set_header Host $http_host;
                 proxy_pass http://${OPENSHIFT_INTERNAL_IP}:15000;
                 proxy_redirect off;

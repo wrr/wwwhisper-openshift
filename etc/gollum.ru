@@ -1,6 +1,24 @@
 require 'rubygems'
 require 'gollum/frontend/app'
 
+class Auth
+  def initialize(app)
+    @app = app
+  end
+
+  # Sets Gollum author to match the authenticated user passed by
+  # wwwhisper in the 'User' header.
+  def call(env)
+    if env.has_key?('HTTP_USER')
+      gollum_author = { :name => env['HTTP_USER'], :email => env['HTTP_USER'] }
+    else
+      gollum_author = { :name => 'anonymous', :email => 'unknown@example.com' }
+    end
+    env['rack.session'] = { 'gollum.author' => gollum_author }
+    @app.call(env)
+  end
+end
+
 set :run, false
 set :environment, :production
 #Precious::App.set(:wiki_options, {:base_path => "/wiki"})
