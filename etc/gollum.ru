@@ -31,6 +31,8 @@ log = File.new(ENV["OPENSHIFT_LOG_DIR"] + "gollum.log", "a+")
 $stdout.reopen(log)
 $stderr.reopen(log)
 
+use Auth
+
 # Serve from /wiki path
 map '/wiki' do
     run Precious::App
