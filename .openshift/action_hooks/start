@@ -32,7 +32,7 @@ chmod 600 ${OPENSHIFT_LOG_DIR}wwwhisper.log
 uwsgi --socket=${OPENSHIFT_RUN_DIR}wwwhisper.sock\
  --pidfile=${OPENSHIFT_RUN_DIR}wwwhisper.pid\
  --daemonize2=${OPENSHIFT_LOG_DIR}wwwhisper.log\
- --chdir=${OPENSHIFT_RUNTIME_DIR}wwwhisper/django_wwwhisper\
+ --chdir=${OPENSHIFT_RUNTIME_DIR}wwwhisper/\
  --module="wwwhisper_service.wsgi:application"\
  --master\
  --vacuum\
