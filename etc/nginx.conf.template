@@ -43,56 +43,38 @@ http {
         # this server.
         set $wwwhisper_site_socket unix:${OPENSHIFT_RUN_DIR}wwwhisper.sock;
 
-        # Exposes wwwhisper authorization API and static pages. These
-        # need to be available without authorization (so not
-        # authenticated users can sign-in).
-        include ${OPENSHIFT_RUNTIME_DIR}wwwhisper/nginx/auth.conf;
+        # Enables wwwhisper authorization for the server.
+        include ${OPENSHIFT_RUNTIME_DIR}wwwhisper/nginx/wwwhisper.conf;
 
+        # Site specific configuration follows. Extend it with anything
+        # you want to serve.
+
+        location /blog {
+           alias ${OPENSHIFT_REPO_DIR}blog/blog/html/;
+         }
+
+        location /wiki {
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           # $user is set according to the auth-request result.
+           proxy_set_header User $user;
+           #proxy_set_header Host $http_host;
+           proxy_pass http://${OPENSHIFT_INTERNAL_IP}:15000;
+           proxy_redirect off;
+        }
+        location /stash {
+           alias ${OPENSHIFT_DATA_DIR}stash;
+           autoindex on;
+           disable_symlinks on from=${OPENSHIFT_DATA_DIR};
+        }
         location / {
-            # Enables protection of the root location and all nested
-            # locations.
-            #
-            # IMPORTANT: It is recommended to make all locations
-            # nested in the protected location, this ensures no
-            # location is accidentally left open. If for some reason
-            # such setup is not possible, 'include
-            # ${OPENSHIFT_RUNTIME_DIR}wwwhisper/nginx/protected_location.conf'
-            # needs to be put in each not nested location!
-            include ${OPENSHIFT_RUNTIME_DIR}wwwhisper/nginx/protected_location.conf;
-
-            # Enable the wwwhisper admin application. It will be
-            # accessible via https://site.url/admin/
-            include ${OPENSHIFT_RUNTIME_DIR}wwwhisper/nginx/admin.conf;
-
-            # Site specific configuration follows. Extend it with
-            # anything you want to serve.
-
-            location /blog {
-                alias ${OPENSHIFT_REPO_DIR}blog/blog/html/;
-            }
-
-            location /wiki {
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                # $user is set according to the auth-request result.
-                proxy_set_header User $user;
-                #proxy_set_header Host $http_host;
-                proxy_pass http://${OPENSHIFT_INTERNAL_IP}:15000;
-                proxy_redirect off;
-            }
-            location /stash {
-               alias ${OPENSHIFT_DATA_DIR}stash;
-               autoindex on;
-               disable_symlinks on from=${OPENSHIFT_DATA_DIR};
-            }
-            location / {
-               root ${OPENSHIFT_REPO_DIR}root;
-               disable_symlinks on from=${OPENSHIFT_REPO_DIR};
-               index index.html intro.html;
-            }
+           root ${OPENSHIFT_REPO_DIR}root;
+           disable_symlinks on from=${OPENSHIFT_REPO_DIR};
+           index index.html intro.html;
         }
 
         error_page 500 502 503 504 /50x.html;
         location = /50x.html {
+            auth_request off;
             root html;
         }
     }
