@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'gollum/frontend/app'
+require 'gollum/app'
 
 class Auth
   def initialize(app)
