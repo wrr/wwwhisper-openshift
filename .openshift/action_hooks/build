@@ -13,7 +13,7 @@ set -e
 source ${OPENSHIFT_REPO_DIR}etc/site.conf
 source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/common
 
-NGINX_VERSION='1.2.6'
+NGINX_VERSION='1.4.1'
 ROOT_DIR=${OPENSHIFT_RUNTIME_DIR}
 BUILD_DIR=${OPENSHIFT_TMP_DIR}/build
 
