@@ -30,6 +30,7 @@ http {
         if ($http_x_forwarded_proto != "https") {
            rewrite ^ https://${OPENSHIFT_APP_DNS}$request_uri? permanent;
         }
+        set $external_scheme $http_x_forwarded_proto;
 
         # Forces modern clients to use secure connections only for at
         # least 8 days after the header was last returned. See:

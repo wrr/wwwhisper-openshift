@@ -115,7 +115,7 @@ EOF
 
     if [[ ! -a  ${OPENSHIFT_DATA_DIR}wwwhisper ]]; then
         echo "Generating wwwhisper configuration."
-        local locations="-l / -l /admin -l /stash"
+        local locations="-l / -l /wwwhisper/admin -l /stash"
         if is_true ${TINKERER}; then
             locations="${locations} -l /blog"
         fi
