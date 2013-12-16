@@ -35,9 +35,9 @@ function install_nginx() {
     pushd nginx-${NGINX_VERSION}
 
     echo "Downloading pcre."
-    wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.31.tar.bz2
+    wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.34.tar.bz2
     echo "Unpacking pcre."
-    tar xfj pcre-8.31.tar.bz2
+    tar xfj pcre-8.34.tar.bz2
 
     echo "Downloading auth-request module."
     git clone https://github.com/PiotrSikora/ngx_http_auth_request_module.git
@@ -45,7 +45,7 @@ function install_nginx() {
     echo "Configuring nginx."
     ./configure --add-module=./ngx_http_auth_request_module/ \
         --with-http_ssl_module --with-http_sub_module \
-        --with-pcre=./pcre-8.31 \
+        --with-pcre=./pcre-8.34 \
         --prefix=${ROOT_DIR}nginx
 
     echo "Compiling nginx."
